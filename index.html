@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AXIAL — Centro de Imágenes Diagnósticas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d13;
+    --bg-elev:#12161f;
+    --bg-elev-2:#171c27;
+    --ink:#e9ecf2;
+    --ink-dim:#8b93a6;
+    --line:rgba(233,236,242,0.09);
+    --pet:#ff6a3d;
+    --pet-2:#ffb454;
+    --ct:#37d9c7;
+    --ct-2:#4fa8ff;
+    --radius:14px;
+    --max:1180px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  img,svg{display:block;max-width:100%;}
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px;}
+
+  :focus-visible{outline:2px solid var(--ct);outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- NAV ---------- */
+
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,13,19,0.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .nav-inner{
+    max-width:var(--max);margin:0 auto;padding:16px 32px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+
+  .nav-brand{display:flex;align-items:baseline;gap:10px;}
+
+  .nav-brand .mark{
+    width:32px;height:32px;border-radius:50%;
+    flex-shrink:0;
+    overflow:hidden;
+    background:var(--ink);
+  }
+  .nav-brand .mark img{
+    width:100%;height:100%;object-fit:cover;
+  }
+
+  .nav-brand .name{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:0.02em;
+  }
+
+  .nav-brand .sub{
+    font-size:12px;color:var(--ink-dim);font-family:'IBM Plex Mono',monospace;
+    display:none;
+  }
+
+  @media(min-width:640px){ .nav-brand .sub{display:inline;} }
+
+  .nav-links{
+    display:none;
+    gap:32px;
+    font-size:14.5px;
+    color:var(--ink-dim);
+  }
+
+  .nav-links a{transition:color .18s ease;}
+  .nav-links a:hover{color:var(--ink);}
+
+  @media(min-width:860px){ .nav-links{display:flex;} }
+
+  .nav-cta{
+    font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:999px;
+    background:var(--ink);color:var(--bg);
+    white-space:nowrap;
+    transition:transform .18s ease, opacity .18s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px);opacity:0.92;}
+
+  .nav-toggle{display:none;}
+
+  @media (max-width:859px){
+    .nav-toggle-label{
+      display:flex;align-items:center;justify-content:center;
+      width:38px;height:38px;border:1px solid var(--line);border-radius:8px;cursor:pointer;
+    }
+    .nav-toggle-label span,
+    .nav-toggle-label span::before,
+    .nav-toggle-label span::after{
+      content:'';display:block;width:16px;height:1.5px;background:var(--ink);position:relative;
+    }
+    .nav-toggle-label span::before{position:absolute;top:-5px;}
+    .nav-toggle-label span::after{position:absolute;top:5px;}
+    .nav-mobile{
+      max-height:0;overflow:hidden;
+      border-top:1px solid var(--line);
+      transition:max-height .28s ease;
+    }
+    .nav-toggle:checked ~ .nav-mobile{max-height:260px;}
+    .nav-mobile-inner{padding:18px 32px;display:flex;flex-direction:column;gap:16px;font-size:15px;color:var(--ink-dim);}
+    .nav-mobile-inner a:hover{color:var(--ink);}
+  }
+  @media (min-width:860px){ .nav-toggle-label,.nav-mobile{display:none;} }
+
+  /* ---------- HERO ---------- */
+
+  .hero{
+    position:relative;
+    padding:88px 0 96px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+
+  .hero-grid{
+    display:grid;grid-template-columns:1fr;gap:56px;align-items:center;
+  }
+  @media(min-width:960px){ .hero-grid{grid-template-columns:1.05fr 0.95fr;gap:40px;} }
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--ct);
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:'';width:6px;height:6px;border-radius:50%;background:var(--pet);
+    box-shadow:0 0 0 3px rgba(255,106,61,0.18);
+  }
+
+  .hero h1{
+    font-size:clamp(34px,4.6vw,54px);
+    line-height:1.08;
+    max-width:14ch;
+    margin-bottom:22px;
+  }
+
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(95deg, var(--pet), var(--pet-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  .hero p.lead{
+    font-size:17px;color:var(--ink-dim);max-width:46ch;margin-bottom:34px;
+  }
+
+  .slogan{
+    font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:500;
+    color:var(--ct);margin-bottom:16px;letter-spacing:0.01em;
+  }
+
+  /* ---------- NOSOTROS ---------- */
+
+  .about-grid{
+    display:grid;grid-template-columns:1fr;gap:40px;
+  }
+  @media(min-width:900px){ .about-grid{grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:start;} }
+
+  .about-lead{color:var(--ink-dim);font-size:15.5px;margin-bottom:18px;}
+
+  .about-quote{
+    font-family:'Space Grotesk',sans-serif;font-size:18px;color:var(--ink);
+    border-left:2px solid var(--pet);padding-left:18px;margin-top:26px;
+  }
+
+  .value-list{display:flex;flex-direction:column;gap:24px;}
+  .value-item{display:flex;gap:16px;align-items:flex-start;}
+  .value-icon{
+    width:40px;height:40px;border-radius:10px;flex-shrink:0;
+    background:var(--bg-elev-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .value-item h4{font-size:15.5px;margin-bottom:4px;}
+  .value-item p{font-size:13.5px;color:var(--ink-dim);}
+
+  .mv-grid{
+    display:grid;grid-template-columns:1fr;gap:24px;
+  }
+  @media(min-width:760px){ .mv-grid{grid-template-columns:repeat(3,1fr);} }
+
+  .mv-card{
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);
+    padding:32px;
+  }
+  .mv-icon{
+    width:44px;height:44px;border-radius:10px;flex-shrink:0;
+    background:var(--bg-elev-2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;margin-bottom:22px;
+  }
+  .mv-card h3{font-size:18px;margin-bottom:10px;}
+  .mv-card p.mv-text{font-size:14px;color:var(--ink-dim);}
+  .mv-card .svc-list{margin-top:18px;}
+  .mv-card .svc-list li{font-size:13.5px;}
+
+  /* ---------- PERSONAL ---------- */
+
+  .team-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
+  }
+  @media(min-width:640px){ .team-grid{grid-template-columns:repeat(3,1fr);} }
+  @media(min-width:980px){ .team-grid{grid-template-columns:repeat(5,1fr);} }
+
+  .team-card{
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 14px;text-align:center;
+  }
+
+  .team-avatar{
+    width:60px;height:60px;border-radius:50%;margin:0 auto 16px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--bg-elev-2);border:1px solid var(--line);
+    overflow:hidden;
+  }
+
+  .team-avatar img{
+    width:100%;height:100%;object-fit:cover;
+  }
+
+  .team-name{font-size:13.5px;font-weight:600;margin-bottom:4px;}
+  .team-role{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.03em;line-height:1.5;
+  }
+
+  .team-note{
+    margin-top:32px;font-size:13.5px;color:var(--ink-dim);
+    border-top:1px solid var(--line);padding-top:20px;
+  }
+
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:44px;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 24px;border-radius:999px;font-size:14.5px;font-weight:600;
+    transition:transform .18s ease, opacity .18s ease, background .18s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--bg);}
+  .btn-primary:hover{transform:translateY(-1px);opacity:0.92;}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:rgba(233,236,242,0.3);}
+
+  .hero-specs{
+    display:flex;gap:32px;flex-wrap:wrap;
+    padding-top:26px;border-top:1px solid var(--line);
+  }
+  .hero-specs .spec-label{font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:4px;}
+  .hero-specs .spec-value{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--ink);}
+
+  /* signature visual: CT gantry rings + PET hotspot */
+  .hero-photo-frame{
+    position:relative;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
+  }
+  .hero-photo-frame img{
+    width:100%;height:100%;object-fit:cover;
+    aspect-ratio:4/3;
+    display:block;
+  }
+  .hero-photo-frame::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, transparent 55%, rgba(10,13,19,0.85) 100%);
+  }
+  .hero-photo-tag{
+    position:absolute;left:20px;bottom:16px;z-index:2;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink);
+    letter-spacing:0.04em;
+    display:flex;align-items:center;gap:8px;
+  }
+  .hero-photo-tag::before{
+    content:'';width:6px;height:6px;border-radius:50%;
+    background:var(--ct);box-shadow:0 0 0 3px rgba(55,217,199,0.2);
+  }
+
+  .gantry-wrap{
+    position:relative;
+    aspect-ratio:1/1;
+    max-width:420px;
+    margin:0 auto;
+  }
+
+  .gantry-ring{
+    position:absolute;inset:0;border-radius:50%;
+    border:1px solid var(--line);
+  }
+  .gantry-ring.r2{inset:11%;}
+  .gantry-ring.r3{inset:22%;}
+  .gantry-ring.r4{inset:33%;border-style:dashed;border-color:rgba(233,236,242,0.14);}
+
+  .gantry-sweep{
+    position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(55,217,199,0.55), transparent 26%);
+    animation:spin 5.5s linear infinite;
+    mask:radial-gradient(circle, transparent 54%, black 55%, black 100%);
+    -webkit-mask:radial-gradient(circle, transparent 54%, black 55%, black 100%);
+  }
+
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .gantry-core{
+    position:absolute;inset:38%;border-radius:50%;
+    background:radial-gradient(circle at 42% 38%, var(--pet-2), var(--pet) 45%, rgba(255,106,61,0.12) 72%, transparent 78%);
+    filter:blur(0.3px);
+    animation:pulse 2.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%,100%{ transform:scale(1); opacity:0.95; }
+    50%{ transform:scale(1.06); opacity:0.75; }
+  }
+
+  .gantry-tick{
+    position:absolute;left:50%;top:2px;width:1.5px;height:14px;
+    background:var(--ct-2);transform-origin:50% 209px;
+  }
+
+  .gantry-caption{
+    position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-dim);
+    white-space:nowrap;letter-spacing:0.04em;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+
+  .section{padding:96px 0;}
+  .section-alt{background:var(--bg-elev);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .section-head h2{font-size:clamp(26px,3vw,36px);margin-bottom:14px;}
+  .section-head p{color:var(--ink-dim);font-size:15.5px;}
+
+  /* ---------- SERVICIOS ---------- */
+
+  .svc-grid{
+    display:grid;grid-template-columns:1fr;gap:24px;
+  }
+  @media(min-width:840px){ .svc-grid{grid-template-columns:1fr 1fr;} }
+
+  .svc-card{
+    background:var(--bg-elev);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:36px;
+    position:relative;
+    overflow:hidden;
+  }
+  .svc-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  }
+  .svc-card.ct::before{background:linear-gradient(90deg, var(--ct), var(--ct-2));}
+  .svc-card.pet::before{background:linear-gradient(90deg, var(--pet), var(--pet-2));}
+
+  .svc-photo{
+    margin:-36px -36px 24px -36px;
+    aspect-ratio:16/10;
+    overflow:hidden;
+    background:var(--bg-elev-2);
+  }
+  .svc-photo img{
+    width:100%;height:100%;object-fit:cover;
+    display:block;
+  }
+
+  .svc-icon{
+    width:46px;height:46px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:22px;
+    background:var(--bg-elev-2);
+    border:1px solid var(--line);
+  }
+  .svc-card.ct .svc-icon svg{stroke:var(--ct);}
+  .svc-card.pet .svc-icon svg{stroke:var(--pet);}
+
+  .svc-card h3{font-size:21px;margin-bottom:6px;}
+  .svc-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.06em;margin-bottom:16px;display:block;
+  }
+  .svc-card p.desc{color:var(--ink-dim);font-size:14.5px;margin-bottom:22px;}
+
+  .svc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .svc-list li{
+    font-size:14px;color:var(--ink);
+    display:flex;align-items:baseline;gap:10px;
+    padding-top:10px;border-top:1px solid var(--line);
+  }
+  .svc-list li:first-child{border-top:none;padding-top:0;}
+  .svc-list li::before{
+    content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0;position:relative;top:-1px;
+  }
+  .svc-card.ct .svc-list li::before{background:var(--ct);}
+  .svc-card.pet .svc-list li::before{background:var(--pet);}
+
+  .svc-note{
+    margin-top:44px;
+    display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 28px;
+  }
+  .svc-note p{font-size:14.5px;color:var(--ink-dim);}
+  .svc-note strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- CONTACTO ---------- */
+
+  .contact-grid{
+    display:grid;grid-template-columns:1fr;gap:20px;
+  }
+  @media(min-width:640px){ .contact-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(min-width:1040px){ .contact-grid{grid-template-columns:repeat(4,1fr);} }
+
+  .contact-card{
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px;
+  }
+  .contact-card .label{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;display:block;
+  }
+  .contact-card .value{font-size:16px;font-weight:500;margin-bottom:4px;}
+  .contact-card .value-dim{font-size:13.5px;color:var(--ink-dim);}
+
+  .contact-banner{
+    margin-top:24px;
+    border-radius:var(--radius);
+    background:var(--bg-elev);border:1px solid var(--line);
+    padding:34px;
+    display:grid;grid-template-columns:1fr;gap:24px;align-items:center;
+  }
+  @media(min-width:760px){ .contact-banner{grid-template-columns:1.3fr auto;} }
+
+  .contact-banner h3{font-size:20px;margin-bottom:8px;}
+  .contact-banner p{color:var(--ink-dim);font-size:14.5px;}
+
+  .scan-pattern{
+    height:8px;width:100%;border-radius:999px;overflow:hidden;
+    background:repeating-linear-gradient(90deg, rgba(233,236,242,0.10) 0 2px, transparent 2px 8px);
+    margin-bottom:20px;
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  .footer{
+    padding:36px 0;
+    border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  }
+  .footer p{font-size:13px;color:var(--ink-dim);}
+  .footer .foot-brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;}
+  .footer .foot-brand .mark{width:22px;height:22px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+  .footer .foot-brand .mark img{width:100%;height:100%;object-fit:cover;}
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <div class="nav-inner">
+    <a href="#top" class="nav-brand">
+      <span class="mark"><img src="images/logo-hrc.jpeg" alt="Logo Hospital Radiology Center"></span>
+      <span class="name">HRC</span>
+      <span class="sub mono">Hospital Radiology Center</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#personal">Personal</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#proteccion">Protección</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <a href="#contacto" class="nav-cta">Agendar estudio</a>
+      <label for="nav-toggle" class="nav-toggle-label" aria-label="Abrir menú"><span></span></label>
+    </div>
+  </div>
+  <div class="nav-mobile">
+    <div class="nav-mobile-inner">
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#personal">Personal</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#proteccion">Protección</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="inicio">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Tomografía Computarizada · Medicina Nuclear PET</span>
+      <p class="slogan">Tecnología que aplica a la vida.</p>
+      <h1>Cada corte revela lo que el ojo no alcanza a <em>ver</em>.</h1>
+      <p class="lead">Combinamos tomografía computarizada de alta resolución y PET de medicina nuclear para entregar diagnósticos precisos, con reportes claros para pacientes y médicos tratantes.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn btn-primary">Agendar estudio</a>
+        <a href="#servicios" class="btn btn-ghost">Ver servicios</a>
+      </div>
+      <div class="hero-specs">
+        <div>
+          <div class="spec-label">Tomógrafo</div>
+          <div class="spec-value">128 cortes</div>
+        </div>
+        <div>
+          <div class="spec-label">Resolución PET</div>
+          <div class="spec-value">≤ 2 mm</div>
+        </div>
+        <div>
+          <div class="spec-label">Entrega de informe</div>
+          <div class="spec-value">24–48 h</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="hero-photo-frame">
+        <img src="images/hero-hospital-fachada.jpeg" alt="Fachada de Hospital Radiology Center">
+        <span class="hero-photo-tag">Hospital Radiology Center · sede principal</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NOSOTROS ================= -->
+<section class="section" id="nosotros">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Nosotros</h2>
+      <p>Un centro construido alrededor de una idea simple: la tecnología solo importa cuando mejora la vida de quien está frente al equipo.</p>
+    </div>
+
+    <div class="mv-grid">
+      <div class="mv-card">
+        <div class="mv-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ct)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="3"/>
+            <line x1="12" y1="1.5" x2="12" y2="4.5"/>
+            <line x1="12" y1="19.5" x2="12" y2="22.5"/>
+            <line x1="1.5" y1="12" x2="4.5" y2="12"/>
+            <line x1="19.5" y1="12" x2="22.5" y2="12"/>
+          </svg>
+        </div>
+        <h3>Nuestra misión</h3>
+        <p class="mv-text">Brindar diagnóstico por imágenes preciso y oportuno, combinando tomografía computarizada y medicina nuclear PET con los más altos estándares de protección radiológica, para apoyar decisiones médicas que mejoren la vida de nuestros pacientes.</p>
+      </div>
+
+      <div class="mv-card">
+        <div class="mv-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pet)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <h3>Nuestra visión</h3>
+        <p class="mv-text">Ser el centro de referencia en imágenes diagnósticas de Panamá, reconocido por la precisión de sus estudios, la calidez de su atención y su compromiso constante con la seguridad radiológica.</p>
+      </div>
+
+      <div class="mv-card">
+        <div class="mv-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ct-2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3.5v5.5c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5.5L12 2z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h3>Nuestros valores</h3>
+        <p class="mv-text">Los principios que guían cada estudio, desde la recepción hasta el informe final.</p>
+        <ul class="svc-list">
+          <li>Precisión diagnóstica en cada protocolo</li>
+          <li>Calidez humana en la atención al paciente</li>
+          <li>Seguridad radiológica en cada equipo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERSONAL ================= -->
+<section class="section section-alt" id="personal">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Nuestro personal</h2>
+      <p>Un equipo multidisciplinario con roles claramente definidos ante las autoridades de salud, desde la titularidad de la licencia hasta la atención en recepción.</p>
+    </div>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/titular-licencia-edermira-mitre.jpeg" alt="Edermira Mitre, Titular de la Licencia">
+        </div>
+        <div class="team-name">Edermira Mitre</div>
+        <div class="team-role">Titular de la Licencia</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/oficial-proteccion-radiologica-alfonso-machuca.jpeg" alt="Alfonso Machuca, Oficial de Protección Radiológica">
+        </div>
+        <div class="team-name">Alfonso Machuca</div>
+        <div class="team-role">Oficial de Protección Radiológica</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/medico-radiologo-marco-serna.jpeg" alt="Marco Serna, Médico Radiólogo">
+        </div>
+        <div class="team-name">Marco Serna</div>
+        <div class="team-role">Médico Radiólogo</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/medico-nuclear-yasser-guerrero.jpeg" alt="Dr. Yasser Guerrero, Médico Nuclear">
+        </div>
+        <div class="team-name">Dr. Yasser Guerrero</div>
+        <div class="team-role">Médico Nuclear</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/tecnologa-radiologa-maria-sanchez.jpeg" alt="María Sánchez, Tecnóloga Radióloga">
+        </div>
+        <div class="team-name">María Sánchez</div>
+        <div class="team-role">Tecnóloga Radióloga</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/tecnologo-radiologo-ameth-mepaquito.jpeg" alt="Ameth Mepaquito, Tecnólogo Radiólogo">
+        </div>
+        <div class="team-name">Ameth Mepaquito</div>
+        <div class="team-role">Tecnólogo Radiólogo</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/tecnologa-radiologa-adaluz-ulloa.jpeg" alt="Adaluz Ulloa, Tecnóloga Radióloga">
+        </div>
+        <div class="team-name">Adaluz Ulloa</div>
+        <div class="team-role">Tecnóloga Radióloga</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/enfermera-allison-zarzavilla.jpeg" alt="Allison Zarzavilla, Enfermera">
+        </div>
+        <div class="team-name">Allison Zarzavilla</div>
+        <div class="team-role">Enfermera</div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="images/recepcionista-edianis-rodriguez.jpeg" alt="Edianis Rodríguez, Recepcionista">
+        </div>
+        <div class="team-name">Edianis Rodríguez</div>
+        <div class="team-role">Recepcionista</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= SERVICIOS ================= -->
+<section class="section" id="servicios">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Dos modalidades, una sola lectura clínica</h2>
+      <p>Cada estudio se planifica según la sospecha diagnóstica y se interpreta junto con el historial del paciente, no de forma aislada.</p>
+    </div>
+
+    <div class="svc-grid">
+      <!-- CT -->
+      <article class="svc-card ct">
+        <div class="svc-photo">
+          <img src="https://www.medicaldevice-network.com/wp-content/uploads/sites/23/2021/04/Image-1-Philips-Incisive-CT-Scanner-1.jpg" alt="Equipo de Tomografía Computarizada Philips Incisive CT">
+        </div>
+        <div class="svc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="4.5"/>
+            <line x1="12" y1="1.5" x2="12" y2="4.2"/>
+          </svg>
+        </div>
+        <span class="svc-tag">Estructura y anatomía</span>
+        <h3>Tomografía Computarizada</h3>
+        <p class="desc">Imágenes transversales de alta definición para evaluar órganos, huesos, vasos y tejidos blandos en minutos.</p>
+        <ul class="svc-list">
+          <li>Tomografía simple y contrastada de cráneo, tórax, abdomen y pelvis</li>
+          <li>Angiotomografía (angio-TC) de vasos y coronarias</li>
+          <li>Tomografía de alta resolución pulmonar</li>
+          <li>Reconstrucciones 3D para planificación quirúrgica</li>
+        </ul>
+      </article>
+
+      <!-- PET -->
+      <article class="svc-card pet">
+        <div class="svc-photo">
+          <img src="images/servicio-pet-equipo.jpg" alt="Equipo PET·CT Philips Gemini de medicina nuclear">
+        </div>
+        <div class="svc-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="12" cy="12" r="2.4"/>
+            <ellipse cx="12" cy="12" rx="9" ry="3.6"/>
+            <ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/>
+            <ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/>
+          </svg>
+        </div>
+        <span class="svc-tag">Actividad metabólica</span>
+        <h3>PET · Medicina Nuclear</h3>
+        <p class="desc">Trazadores radiactivos que muestran actividad celular, útiles para detectar procesos que la anatomía por sí sola no revela.</p>
+        <ul class="svc-list">
+          <li>PET-CT oncológico para estadificación y seguimiento</li>
+          <li>PET cardiológico de perfusión miocárdica</li>
+          <li>PET cerebral para estudio neurológico</li>
+          <li>Fusión de imagen metabólica y anatómica en un solo informe</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="svc-note">
+      <p>¿No sabe qué estudio necesita? <strong>Un médico del centro revisa su orden antes de agendar</strong> para confirmar la modalidad correcta.</p>
+      <a href="#contacto" class="btn btn-ghost">Consultar mi caso</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROTECCIÓN RADIOLÓGICA ================= -->
+<section class="section section-alt" id="proteccion">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Protección radiológica y del paciente</h2>
+      <p>Seguimos el principio ALARA — la menor dosis posible que aún permita un diagnóstico confiable — en cada estudio de CT y PET.</p>
+    </div>
+
+    <div class="svc-grid">
+      <article class="svc-card ct">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3.5v5.5c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5.5L12 2z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="svc-tag">Optimización de dosis</span>
+        <h3>Protección en CT</h3>
+        <p class="desc">La dosis se ajusta a cada paciente, no al protocolo estándar del equipo.</p>
+        <ul class="svc-list">
+          <li>Modulación automática de dosis según biotipo del paciente</li>
+          <li>Protocolos pediátricos de baja dosis</li>
+          <li>Blindaje plomado en tiroides y gónadas cuando el estudio lo permite</li>
+          <li>Dosimetría personal del equipo técnico con dosímetro OSL</li>
+          <li>Control de calidad del equipo por física médica</li>
+        </ul>
+      </article>
+
+      <article class="svc-card pet">
+        <div class="svc-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3.5v5.5c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5.5L12 2z"/>
+            <circle cx="12" cy="10.5" r="2.2"/>
+          </svg>
+        </div>
+        <span class="svc-tag">Manejo de radiofármacos</span>
+        <h3>Protección en PET · Medicina Nuclear</h3>
+        <p class="desc">El trazador se calcula, administra y desecha bajo protocolos estrictos de radioprotección.</p>
+        <ul class="svc-list">
+          <li>Dosis de radiofármaco calculada por peso corporal</li>
+          <li>Sala de espera exclusiva tras la inyección, separada de otros pacientes</li>
+          <li>Dosimetría personal con dosímetro OSL y dosímetro de anillo para extremidades</li>
+          <li>Decaimiento y desecho controlado de residuos radiactivos</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="section-head" style="margin-top:64px;margin-bottom:32px;">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;margin-bottom:10px;">Protección al paciente</h3>
+      <p>Medidas que aplicamos antes, durante y después de cada estudio.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <span class="label">Antes del estudio</span>
+        <div class="value">Evaluación de embarazo y alergias</div>
+        <div class="value-dim">Se descarta antes de cualquier estudio con radiación o contraste</div>
+      </div>
+      <div class="contact-card">
+        <span class="label">Durante el estudio</span>
+        <div class="value">Acompañantes con distancia de seguridad</div>
+        <div class="value-dim">Delantales plomados disponibles cuando se requiere presencia en sala</div>
+      </div>
+      <div class="contact-card">
+        <span class="label">Después del PET</span>
+        <div class="value">Hidratación y distanciamiento temporal</div>
+        <div class="value-dim">Recomendaciones para evitar contacto cercano con niños y embarazadas por unas horas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACTO ================= -->
+<section class="section" id="contacto">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Contacto y ubicación</h2>
+      <p>Escríbanos, llámenos o visítenos. Confirmamos disponibilidad de equipo el mismo día.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <span class="label">Dirección</span>
+        <div class="value">Calle Juan XXIII</div>
+        <div class="value-dim">Panamá, Provincia de Panamá</div>
+      </div>
+      <div class="contact-card">
+        <span class="label">Teléfono</span>
+        <div class="value">+507 6473-9751</div>
+        <div class="value-dim">Llamadas y WhatsApp</div>
+      </div>
+      <div class="contact-card">
+        <span class="label">Correo</span>
+        <div class="value">hospitalradiologycenter@gmail.com</div>
+        <div class="value-dim">Respuesta el mismo día hábil</div>
+      </div>
+      <div class="contact-card">
+        <span class="label">Instagram</span>
+        <div class="value">@hospitalradiologycenter</div>
+        <div class="value-dim">Novedades y horarios especiales</div>
+      </div>
+    </div>
+
+    <div class="contact-grid" style="margin-top:20px;">
+      <div class="contact-card">
+        <span class="label">Horario de atención</span>
+        <div class="value">Lunes a viernes, 7:00–19:00</div>
+        <div class="value-dim">Sábados, 8:00–13:00</div>
+      </div>
+    </div>
+
+    <div class="contact-banner">
+      <div>
+        <div class="scan-pattern"></div>
+        <h3>¿Trae orden médica?</h3>
+        <p>Complete el formulario de admisión anticipada por correo o preséntese 20 minutos antes de su cita con la orden impresa.</p>
+      </div>
+      <a href="#contacto" class="btn btn-primary">Agendar ahora</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="wrap footer" style="border:none;padding:0;width:100%;">
+    <div class="foot-brand"><span class="mark"><img src="images/logo-hrc.jpeg" alt="Logo Hospital Radiology Center"></span> Hospital Radiology Center — Tecnología que aplica a la vida</div>
+    <p>© 2026 Hospital Radiology Center. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+</body>
+</html>
