@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AXIAL — Centro de Imágenes Diagnósticas</title>
+<title>Hospital Radiology Center — Tecnología que aplica a la vida</title>
+<link rel="icon" type="image/jpeg" href="images/logo-hrc.jpeg">
+<meta name="description" content="Hospital Radiology Center: tomografía computarizada (CT) y medicina nuclear (PET) en Panamá. Diagnóstico preciso, protección radiológica y atención humana.">
+<link rel="icon" type="image/jpeg" href="images/logo-hrc.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -460,6 +463,40 @@
   .contact-card .value{font-size:16px;font-weight:500;margin-bottom:4px;}
   .contact-card .value-dim{font-size:13.5px;color:var(--ink-dim);}
 
+  .form-card{
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius);
+    padding:36px;margin-bottom:32px;
+  }
+  .form-card h3{font-size:20px;margin-bottom:6px;}
+  .form-card .form-lead{font-size:14.5px;color:var(--ink-dim);margin-bottom:28px;}
+
+  .form-grid{
+    display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:22px;
+  }
+  @media(min-width:640px){ .form-grid{grid-template-columns:1fr 1fr;} }
+  .form-field{display:flex;flex-direction:column;gap:8px;}
+  .form-field.full{grid-column:1/-1;}
+  .form-field label{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:0.05em;
+  }
+  .form-field input,
+  .form-field select,
+  .form-field textarea{
+    background:var(--bg-elev-2);border:1px solid var(--line);border-radius:9px;
+    padding:12px 14px;font-family:'IBM Plex Sans',sans-serif;font-size:14.5px;color:var(--ink);
+  }
+  .form-field input::placeholder,
+  .form-field textarea::placeholder{color:var(--ink-dim);}
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus{
+    outline:none;border-color:var(--ct);
+  }
+  .form-field textarea{resize:vertical;min-height:100px;font-family:inherit;}
+
+  .form-note{font-size:12.5px;color:var(--ink-dim);margin-top:14px;}
+
   .contact-banner{
     margin-top:24px;
     border-radius:var(--radius);
@@ -480,6 +517,35 @@
 
   /* ---------- FOOTER ---------- */
 
+  /* ---------- WHATSAPP FLOAT ---------- */
+
+  .wa-float{
+    position:fixed;right:22px;bottom:22px;z-index:60;
+    width:58px;height:58px;border-radius:50%;
+    background:#25D366;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 28px -8px rgba(0,0,0,0.55);
+    transition:transform .18s ease;
+  }
+  .wa-float:hover{transform:translateY(-2px) scale(1.04);}
+  .wa-float svg{width:28px;height:28px;}
+
+  /* ---------- MAP ---------- */
+
+  .contact-map{
+    margin-top:24px;border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--line);
+    filter:grayscale(0.25) contrast(1.05);
+  }
+  .contact-map iframe{width:100%;height:340px;display:block;border:0;}
+
+  /* ---------- PREP INSTRUCTIONS ---------- */
+
+  .prep-grid{
+    display:grid;grid-template-columns:1fr;gap:24px;margin-top:64px;
+  }
+  @media(min-width:840px){ .prep-grid{grid-template-columns:1fr 1fr;} }
+
   .footer{
     padding:36px 0;
     border-top:1px solid var(--line);
@@ -489,6 +555,19 @@
   .footer .foot-brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;}
   .footer .foot-brand .mark{width:22px;height:22px;border-radius:50%;overflow:hidden;flex-shrink:0;}
   .footer .foot-brand .mark img{width:100%;height:100%;object-fit:cover;}
+
+  /* ---------- WHATSAPP FLOAT ---------- */
+
+  .whatsapp-float{
+    position:fixed;right:22px;bottom:22px;z-index:60;
+    width:58px;height:58px;border-radius:50%;
+    background:#25D366;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 28px -8px rgba(0,0,0,0.55);
+    transition:transform .18s ease;
+  }
+  .whatsapp-float:hover{transform:scale(1.06);}
+  .whatsapp-float svg{width:28px;height:28px;}
 </style>
 </head>
 <body>
@@ -532,8 +611,7 @@
   <div class="wrap hero-grid">
     <div>
       <span class="eyebrow">Tomografía Computarizada · Medicina Nuclear PET</span>
-      <p class="slogan">Tecnología que aplica a la vida.</p>
-      <h1>Cada corte revela lo que el ojo no alcanza a <em>ver</em>.</h1>
+      <h1>Tecnología que aplica a la <em>vida</em>.</h1>
       <p class="lead">Combinamos tomografía computarizada de alta resolución y PET de medicina nuclear para entregar diagnósticos precisos, con reportes claros para pacientes y médicos tratantes.</p>
       <div class="hero-actions">
         <a href="#contacto" class="btn btn-primary">Agendar estudio</a>
@@ -585,7 +663,7 @@
           </svg>
         </div>
         <h3>Nuestra misión</h3>
-        <p class="mv-text">Brindar diagnóstico por imágenes preciso y oportuno, combinando tomografía computarizada y medicina nuclear PET con los más altos estándares de protección radiológica, para apoyar decisiones médicas que mejoren la vida de nuestros pacientes.</p>
+        <p class="mv-text">Nuestra misión es cuidar de cada paciente como lo más importante, brindando atención segura, humana y de calidad, apoyada en tecnología de vanguardia y profesionales comprometidos con un diagnóstico preciso y oportuno.</p>
       </div>
 
       <div class="mv-card">
@@ -609,9 +687,10 @@
         <h3>Nuestros valores</h3>
         <p class="mv-text">Los principios que guían cada estudio, desde la recepción hasta el informe final.</p>
         <ul class="svc-list">
-          <li>Precisión diagnóstica en cada protocolo</li>
-          <li>Calidez humana en la atención al paciente</li>
-          <li>Seguridad radiológica en cada equipo</li>
+          <li><strong>Respeto:</strong> valoramos la vida, la diversidad y los derechos de cada paciente</li>
+          <li><strong>Compromiso:</strong> asumimos con vocación el cuidado de la salud de nuestra comunidad</li>
+          <li><strong>Confianza:</strong> construimos relaciones basadas en la honestidad y la precisión médica</li>
+          <li><strong>Calidez:</strong> brindamos un trato cercano y humano en cada interacción</li>
         </ul>
       </div>
     </div>
@@ -715,7 +794,7 @@
       <!-- CT -->
       <article class="svc-card ct">
         <div class="svc-photo">
-          <img src="https://www.medicaldevice-network.com/wp-content/uploads/sites/23/2021/04/Image-1-Philips-Incisive-CT-Scanner-1.jpg" alt="Equipo de Tomografía Computarizada Philips Incisive CT">
+          <img src="https://images.unsplash.com/photo-1758206523830-a5b8afb372a6?fm=jpg&q=80&w=1200&auto=format&fit=crop" alt="Equipo de Tomografía Computarizada en sala de escaneo">
         </div>
         <div class="svc-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round">
@@ -763,6 +842,35 @@
     <div class="svc-note">
       <p>¿No sabe qué estudio necesita? <strong>Un médico del centro revisa su orden antes de agendar</strong> para confirmar la modalidad correcta.</p>
       <a href="#contacto" class="btn btn-ghost">Consultar mi caso</a>
+    </div>
+
+    <div class="section-head" style="margin-top:64px;margin-bottom:0;">
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;margin-bottom:10px;">Preparación para tu estudio</h3>
+      <p>Sigue estas indicaciones generales; el equipo te confirmará instrucciones específicas al agendar.</p>
+    </div>
+
+    <div class="prep-grid">
+      <article class="svc-card ct">
+        <span class="svc-tag">Antes de tu CT</span>
+        <h3>Tomografía Computarizada</h3>
+        <ul class="svc-list">
+          <li>Trae tu orden médica y estudios previos si los tienes</li>
+          <li>Si es con contraste, ayuno de 4 horas antes del estudio</li>
+          <li>Informa si tienes alergias, eres diabético o estás embarazada</li>
+          <li>Usa ropa cómoda, sin metales ni accesorios</li>
+        </ul>
+      </article>
+
+      <article class="svc-card pet">
+        <span class="svc-tag">Antes de tu PET</span>
+        <h3>PET · Medicina Nuclear</h3>
+        <ul class="svc-list">
+          <li>Ayuno de al menos 6 horas (se permite tomar agua)</li>
+          <li>Evita ejercicio intenso 24 horas antes del estudio</li>
+          <li>Llega con tiempo: la captación del radiofármaco toma cerca de 1 hora</li>
+          <li>Después del estudio, evita contacto cercano con niños y embarazadas por unas horas</li>
+        </ul>
+      </article>
     </div>
   </div>
 </section>
@@ -847,6 +955,45 @@
       <p>Escríbanos, llámenos o visítenos. Confirmamos disponibilidad de equipo el mismo día.</p>
     </div>
 
+    <form class="form-card">
+      <h3>Solicita tu estudio o haz una consulta</h3>
+      <p class="form-lead">Completa tus datos y te contactaremos para confirmar disponibilidad.</p>
+
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="f-nombre">Nombre</label>
+          <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-field">
+          <label for="f-apellido">Apellido</label>
+          <input type="text" id="f-apellido" name="apellido" placeholder="Tu apellido" required>
+        </div>
+        <div class="form-field">
+          <label for="f-edad">Edad</label>
+          <input type="number" id="f-edad" name="edad" placeholder="Edad" min="0" max="120">
+        </div>
+        <div class="form-field">
+          <label for="f-cedula">Cédula</label>
+          <input type="text" id="f-cedula" name="cedula" placeholder="N.º de cédula">
+        </div>
+        <div class="form-field">
+          <label for="f-correo">Correo electrónico</label>
+          <input type="email" id="f-correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+        <div class="form-field">
+          <label for="f-telefono">Teléfono / WhatsApp</label>
+          <input type="tel" id="f-telefono" name="telefono" placeholder="+507 0000-0000" required>
+        </div>
+        <div class="form-field full">
+          <label for="f-necesidad">¿Qué necesitas?</label>
+          <textarea id="f-necesidad" name="necesidad" placeholder="Cuéntanos qué estudio necesitas o tu consulta"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Enviar solicitud</button>
+      <p class="form-note">Al enviar, aceptas que te contactemos por teléfono, WhatsApp o correo para coordinar tu cita.</p>
+    </form>
+
     <div class="contact-grid">
       <div class="contact-card">
         <span class="label">Dirección</span>
@@ -873,9 +1020,13 @@
     <div class="contact-grid" style="margin-top:20px;">
       <div class="contact-card">
         <span class="label">Horario de atención</span>
-        <div class="value">Lunes a viernes, 7:00–19:00</div>
-        <div class="value-dim">Sábados, 8:00–13:00</div>
+        <div class="value">Lunes a domingo</div>
+        <div class="value-dim">Las 24 horas del día</div>
       </div>
+    </div>
+
+    <div class="contact-map">
+      <iframe src="https://www.google.com/maps?q=Calle+Juan+XXIII,+Panam%C3%A1&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Ubicación de Hospital Radiology Center"></iframe>
     </div>
 
     <div class="contact-banner">
@@ -897,5 +1048,8 @@
   </div>
 </footer>
 
+<a href="https://wa.me/50764739751?text=Hola%2C%20quisiera%20informaci%C3%B3n%20sobre%20un%20estudio" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2m0 1.67c2.24 0 4.35.87 5.93 2.46a8.23 8.23 0 0 1 2.42 5.85c0 4.56-3.71 8.27-8.28 8.27a8.3 8.3 0 0 1-4.22-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.26 8.26 0 0 1-1.27-4.4c.01-4.57 3.72-8.28 8.29-8.28M8.53 7.33c-.16 0-.43.06-.66.31c-.22.25-.86.84-.86 2.05c0 1.21.88 2.38 1 2.55c.12.16 1.72 2.73 4.28 3.82c.6.27 1.06.42 1.42.54c.6.19 1.15.16 1.58.1c.48-.07 1.48-.6 1.69-1.19c.21-.58.21-1.08.14-1.19c-.06-.1-.22-.16-.46-.28c-.25-.12-1.48-.73-1.71-.81c-.23-.08-.39-.12-.56.13c-.17.24-.64.81-.78.97c-.15.16-.29.19-.54.06c-.25-.12-1.04-.38-1.97-1.22c-.73-.65-1.22-1.45-1.36-1.7c-.14-.24-.02-.38.11-.5c.11-.11.25-.29.37-.43c.12-.15.16-.25.24-.41c.08-.17.04-.31-.02-.43c-.06-.12-.56-1.36-.78-1.86c-.19-.47-.4-.42-.56-.43c-.14-.01-.31-.01-.47-.01Z"/></svg>
+</a>
 </body>
 </html>
